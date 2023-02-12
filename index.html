@@ -16,8 +16,9 @@
       }
      #logo {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: 500px;
         height: 500px;
         opacity: 0;
@@ -39,10 +40,6 @@
           video.style.height = "100%";
           video.style.objectFit = "cover";
           document.getElementById("webcam-feed").appendChild(video);
-
-          // Move the logo to the top center
-          document.getElementById("logo").style.top = "30px";
-          document.getElementById("logo").style.left = "400px";
 
           // Fade in the logo
           $("#logo").animate({
