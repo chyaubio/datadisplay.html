@@ -53,10 +53,6 @@
           navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
-            
-            // Get the location name
-            $.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`, function (locationData) {
-              var locationName = locationData.address.town || locationData.address.city || locationData.address.state || locationData.address.country;
 
             // Get the air quality data
             $.get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=b4925c40110ed2049ee5f6deb33a490b38a9f1e3`, function (data) {
