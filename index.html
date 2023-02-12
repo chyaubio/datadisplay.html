@@ -13,6 +13,7 @@
         padding: 10px;
         text-align: center;
         border-radius: 10px;
+        opacity: 0;
       }
      #logo {
         position: absolute;
@@ -44,7 +45,12 @@
           // Fade in the logo
           $("#logo").animate({
             opacity: 0.4
-          }, 8000);
+          }, 3000);
+       
+       // Fade in the Tile for Air Quality
+          $("#air-quality-data").animate({
+            opacity: 0.4
+          }, 4000);
 
 // Get the device's GPS location
 navigator.geolocation.getCurrentPosition(function (position) {
