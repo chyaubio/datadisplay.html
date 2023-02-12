@@ -49,38 +49,47 @@
             opacity: 0.8
           }, 8000);
 
-          // Get the device's GPS location
-          navigator.geolocation.getCurrentPosition(function (position) {
-            var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
+// Get the device's GPS location
+navigator.geolocation.getCurrentPosition(function (position) {
+  var lat = position.coords.latitude;
+  var lng = position.coords.longitude;
 
-            // Get the air quality data
-            $.get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=b4925c40110ed2049ee5f6deb33a490b38a9f1e3`, function (data) {
-              var aqIndex = data.data.aqi;
-              var aqLevel = "";
-              var aqColor = "";
-              if (aqIndex <= 50) {
-                aqLevel = "Good";
-                aqColor = "green";
-              } else if (aqIndex <= 100) {
-                aqLevel = "Moderate";
-                aqColor = "yellow";
-              } else if (aqIndex <= 150) {
-                aqLevel = "Unhealthy for Sensitive Groups";
-                aqColor = "orange";
-              } else if (aqIndex <= 200) {
-                aqLevel = "Unhealthy";
-                aqColor = "red";
-              } else if (aqIndex <= 300) {
-                aqLevel = "Very Unhealthy";
-                aqColor = "darkred";
-              } else {
-                aqLevel = "Hazardous";
-                aqColor = "purple";
-              }
-              document.getElementById("air-quality-data").innerHTML = `<p style="color: ${aqColor};">Air Quality Index: ${aqIndex} (${aqLevel})</p>`;
-            });
-          });
+  // Get the air quality data from AQICN
+  $.get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=b4925c40110ed2049ee5f6deb33a490b38a9f1e3`, function (aqData) {
+    var aqIndex = aqData.data.aqi;
+    var aqLevel = "";
+    var aqColor = "";
+    if (aqIndex <= 50) {
+      aqLevel = "Good";
+      aqColor = "green";
+    } else if (aqIndex <= 100) {
+      aqLevel = "Moderate";
+      aqColor = "yellow";
+    } else if (aqIndex <= 150) {
+      aqLevel = "Unhealthy for Sensitive Groups";
+      aqColor = "orange";
+    } else if (aqIndex <= 200) {
+      aqLevel = "Unhealthy";
+      aqColor = "red";
+    } else if (aqIndex <= 300) {
+      aqLevel = "Very Unhealthy";
+      aqColor = "darkred";
+    } else {
+      aqLevel = "Hazardous";
+      aqColor = "purple";
+    }
+    document.getElementById("air-quality-data").innerHTML = `<p style="color: ${aqColor};">Air Quality Index: ${aqIndex} (${aqLevel})</p>`;
+    
+    // Get the weather data from AQICN
+    $.get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=b4925c40110ed2049ee5f6deb33a490b38a9f1e3`, function (weatherData) {
+      // Use the weatherData object to display the weather information
+      var temperature = weatherData.main.temp;
+      var humidity = weatherData.main.humidity;
+      var weather = weatherData.weather[0].description;
+      document.getElementById("air-quality-data").innerHTML += `<p>Temperature: ${temperature} &#8451;</p><p>Humidity: ${humidity}%</p><p>Weather: ${weather}</p>`;
+    });
+  });
+});
         })
         .catch(function (err) {
           console.error("Failed to get webcam feed:", err);
