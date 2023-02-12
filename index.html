@@ -27,7 +27,7 @@
     <div id="air-quality-data"></div>
     <script>
       // Get the webcam feed
-      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
         .then(function (stream) {
           var video = document.createElement("video");
           video.srcObject = stream;
