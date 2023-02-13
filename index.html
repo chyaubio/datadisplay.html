@@ -1,8 +1,9 @@
 <html>
   <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.1.1/aframe/build/aframe-ar.js"></script>
     <style>
-     #air-quality-data {
+      #air-quality-data {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -15,25 +16,32 @@
         border-radius: 10px;
         opacity: 0;
       }
-     #logo {
+      #logo {
         position: absolute;
         top: 50%;
         left: 50%;
-        center: 50%;
         transform: translate(-50%, -50%);
-        margin-top:-600px;
+        margin-top: -600px;
         width: 500px;
         height: 500px;
         opacity: 0;
+      }
     </style>
   </head>
-  <body>
+  <body style='margin : 0px; overflow: hidden;'>
+    <a-scene embedded arjs='sourceType: webcam;'>
+      <a-marker type='pattern' url='pattern-marker.patt'>
+        <a-box position='0 0.5 0' rotation='0 0 0' width='200' height='200' depth='10' color='white'>
+          <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/companylogo.png">
+        </a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
     <div id="webcam-feed"></div>
-    <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/companylogo.png">
     <div id="air-quality-data"></div>
     <script>
       // Get the webcam feed
-     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
         .then(function (stream) {
           var video = document.createElement("video");
           video.srcObject = stream;
@@ -47,16 +55,16 @@
           $("#logo").animate({
             opacity: 0.4
           }, 3000);
-       
-       // Fade in the Tile for Air Quality
+
+          // Fade in the Tile for Air Quality
           $("#air-quality-data").animate({
             opacity: 0.4
           }, 4000);
 
-// Get the device's GPS location
-navigator.geolocation.getCurrentPosition(function (position) {
-  var lat = position.coords.latitude;
-  var lng = position.coords.longitude;
+          // Get the device's GPS location
+          navigator.geolocation.getCurrentPosition(function (position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
 
   // Get the air quality data from AQICN
   $.get(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=b4925c40110ed2049ee5f6deb33a490b38a9f1e3`, function (aqData) {
