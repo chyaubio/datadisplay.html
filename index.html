@@ -34,6 +34,17 @@
         width: 100%;
         z-index: 2;
       }
+      
+      /* Apply different styles for small screens */
+      @media only screen and (max-width: 600px) {
+        #logo {
+          width: 200px;
+          height: 200px;
+        }
+        #tomorrow-widget {
+          height: 40vh;
+        }
+      }
     </style>
   </head>
   <body>
@@ -95,7 +106,7 @@
             window.__TOMORROW__.renderWidget();
           }
           return;
-        }
+        }     
         const fjs = d.getElementsByTagName(s)[0];
         const js = d.createElement(s);
         js.id = id;
