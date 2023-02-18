@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-   <script>
-      // Check if the browser is Google Chrome
+    <script>
       var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-      // If not Chrome or does not support getUserMedia, prompt the user to use Google Lens
-      if (!isChrome) {
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (!isChrome || isMobile) {
         document.body.innerHTML = '<p>Use Google Lens to access our service.</p>';
       }
     </script>
