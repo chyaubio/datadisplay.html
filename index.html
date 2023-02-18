@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script>
+   <script>
+      // Check if the browser is Google Chrome
+      var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
       // Check if the browser supports getUserMedia
       var supportsCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
 
-      // If not, prompt the user to enable camera access
-      if (!supportsCamera) {
-        var enableCameraDiv = document.createElement('div');
-        enableCameraDiv.innerHTML = 'Your browser is incompatible. Please use chrome browser.';
-        document.body.insertBefore(enableCameraDiv, document.body.firstChild);
+      // If not Chrome or does not support getUserMedia, prompt the user to use Google Lens
+      if (!isChrome || !supportsCamera) {
+        var promptDiv = document.createElement('div');
+        promptDiv.innerHTML = 'Please use Google Lens to access our service. You are having browser compatibility issues.';
+        document.body.insertBefore(promptDiv, document.body.firstChild);
       }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
