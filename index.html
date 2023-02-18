@@ -119,21 +119,5 @@
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "tomorrow-sdk");
     </script>
-<button onclick="openInChrome()">Open in Chrome</button>
-    <script>
-      function openInChrome() {
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-        if (/android/i.test(userAgent)) {
-          window.location.href = 'googlechrome://navigate?url=' + encodeURIComponent(window.location.href);
-        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          window.location.href = 'googlechrome://navigate?url=' + encodeURIComponent(window.location.href);
-        } else if (/Windows Phone/i.test(userAgent)) {
-          window.location.href = 'msedge:' + encodeURIComponent(window.location.href);
-        } else {
-          alert("This feature is only available on Android devices with Google Chrome, iOS devices with Google Chrome installed, and Windows Phones with Microsoft Edge installed.");
-        }
-      }
-    </script>
   </body>
 </html>
