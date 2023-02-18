@@ -80,12 +80,21 @@
     </div>
     <script>
       // Get the webcam feed
-      navigator.mediaDevices.getUserMedia({ video: true })
+      navigator.mediaDevices
+        .getUserMedia({
+          video: {
+            facingMode: "environment",
+          },
+          audio: false,
+        })
         .then(function (stream) {
-          var video = document.createElement('video');
+          var video = document.createElement("video");
           video.srcObject = stream;
           video.play();
-          document.getElementById('webcam-feed').appendChild(video);
+          video.style.width = "100%";
+          video.style.height = "100%";
+          video.style.objectFit = "cover";
+          document.getElementById("webcam-feed").appendChild(video);
           // Fade in the logo
           $("#logo").animate(
             {
@@ -93,10 +102,6 @@
             },
             1500
           );
-        })
-        .catch(function (err) {
-          console.log('Error accessing camera: ' + err);
-          alert('Error accessing camera. Use Google chrome browser to use the app. ' + err);
         });
     </script>
     <script>
