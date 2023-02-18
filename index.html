@@ -5,11 +5,8 @@
       // Check if the browser is Google Chrome
       var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-      // Check if the browser supports getUserMedia
-      var supportsCamera = navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
-
       // If not Chrome or does not support getUserMedia, prompt the user to use Google Lens
-      if (!isChrome || !supportsCamera) {
+      if (!isChrome) {
         var promptDiv = document.createElement('div');
         promptDiv.innerHTML = 'Please use Google Lens to access our service. You are having browser compatibility issues.';
         document.body.insertBefore(promptDiv, document.body.firstChild);
