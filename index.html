@@ -3,19 +3,23 @@
   <head>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/chyaubio/chyaubio.github.io/cacf41165cb55adb4690790eb278c30a760aea7d/img/Logos/favicon.png">
     <script>
-  // Get the user's current location
-  navigator.geolocation.getCurrentPosition(function (position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
+      // Set the location for the Tomorrow.io widget
+      function setLocation(latitude, longitude) {
+        var widget = window.tomorrowWidget;
+        if (widget) {
+          widget.setLocation({ lat: latitude, lon: longitude });
+        }
+      }
 
-    // Set the location for the Tomorrow.io widget
-    var widget = window.tomorrowWidget;
-    if (widget) {
-      widget.setLocation({ lat: latitude, lon: longitude });
-    }
-  });
-</script>
-
+      // Get the user's current location and update the widget
+      function updateLocation() {
+        navigator.geolocation.watchPosition(function (position) {
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+          setLocation(latitude, longitude);
+        });
+      }
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
       html,
