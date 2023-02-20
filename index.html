@@ -10,16 +10,21 @@
           widget.setLocation({ lat: latitude, lon: longitude });
         }
       }
-
-      // Get the user's current location and update the widget
-      function updateLocation() {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    setLocation(latitude, longitude);
-  });
+     function updateLocation() {
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      setLocation(latitude, longitude);
+    },
+    function (error) {
+      console.log(error);
+      // If the user denies the location permission or the location cannot be determined, you can provide a default location instead.
+      // For example:
+      // setLocation(37.7749, -122.4194);
+    }
+  );
 }
-
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
