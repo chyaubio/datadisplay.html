@@ -13,12 +13,13 @@
 
       // Get the user's current location and update the widget
       function updateLocation() {
-        navigator.geolocation.watchPosition(function (position) {
-          var latitude = position.coords.latitude;
-          var longitude = position.coords.longitude;
-          setLocation(latitude, longitude);
-        });
-      }
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    setLocation(latitude, longitude);
+  });
+}
+
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
