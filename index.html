@@ -2,64 +2,6 @@
 <html>
   <head>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/chyaubio/chyaubio.github.io/cacf41165cb55adb4690790eb278c30a760aea7d/img/Logos/favicon.png">
-    <script>
-      // Set the location for the AQI widget
-      function setLocation(latitude, longitude) {
-        var widget = document.getElementsByName("airvisual_widget")[0];
-        widget.setAttribute("lat", latitude);
-        widget.setAttribute("lon", longitude);
-        console.log(`Widget location set to (${latitude}, ${longitude})`);
-      }
-      
-      function updateLocation() {
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            setLocation(latitude, longitude);
-            // Show the widget once the location has been set
-            document.getElementById("airvisual_widget").style.display = "block";
-          
-            // Fetch the location address
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
-              .then(response => response.json())
-              .then(data => {
-                // Parse the response data to extract the address information
-                const address = `${data.address.house_number} ${data.address.road}, ${data.address.city}, ${data.address.state}, ${data.address.postcode}, ${data.address.country}`;
-                // Display the location address on the page
-                document.getElementById("location_address").textContent = `Your current location: ${address}`;
-              })
-              .catch(error => {
-                console.error(error);
-              });
-            
-            // Fetch the widget data
-            fetch(`https://api.airvisual.com/v2/nearest_city?key=63f9b559bb64236302720588&lat=${latitude}&lon=${longitude}`)
-              .then(response => response.json())
-              .then(data => {
-                console.log("Widget data:", data);
-                // Display the widget data on the page
-                document.getElementById("widget_data").textContent = JSON.stringify(data, null, 2);
-              })
-              .catch(error => {
-                console.error(error);
-              });
-          },
-          function (error) {
-            console.log(error);
-            // Hide the widget and display an error message if the user denies location permission
-            if (error.code === error.PERMISSION_DENIED) {
-              document.getElementById("airvisual_widget").style.display = "none";
-              alert("This widget requires location permission to function properly.");
-            } else {
-              // If there is another error, you can provide a default location instead.
-              // For example:
-              // setLocation(37.7749, -122.4194);
-            }
-          }
-        );
-      }
-    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
       html,
@@ -90,6 +32,60 @@
         opacity: 0;
         z-index: 1;
       }
+      #slideshow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        center: 50%;
+        transform: translate(-50%, -50%);
+        margin-top: -200px;
+        width: 400px;
+        height: 400px;
+        overflow: hidden;
+        z-index: 1;
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      @media only screen and (max-width: 600px) {
+        #slideshow {
+          width: 200px;
+          height: 200px;
+          margin-top: -100px;
+        }
+      }
+
+      #slideshow img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.2;
+        transition: transform 1s ease-in-out;
+        transform: translateX(0%);
+      }
+
+      #slideshow img.active {
+        opacity: 0.7;
+        transform: translateX(-100%);
+      }
+
+      #slideshow-controls {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+      }
+
+      #slideshow-controls button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 2em;
+        cursor: pointer;
+        margin: 0 10px;
+        outline: none;
+      }
+
       /* Apply different styles for small screens */
       @media only screen and (max-width: 600px) {
         #logo {
@@ -97,6 +93,7 @@
           height: 200px;
         }
       }
+
       /* Hide the widget by default */
       #airvisual_widget {
         display: none;
@@ -106,14 +103,51 @@
   <body>
     <div id="webcam-feed"></div>
     <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/logogif.gif">
-    <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;">
-    <div id="widget_city"></div>
-    <div id="widget_aqi_value"></div>
-    <div id="widget_aqi_category"></div>
-    <div id="widget_aqi_color" style="width: 50px; height: 50px; margin: 10px auto;"></div>
-   </div>
     <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;"></div>
-    <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
+<div id="slideshow">
+  <img src="https://via.placeholder.com/400x400/1abc9c/ffffff" />
+  <img src="https://via.placeholder.com/400x400/3498db/ffffff" />
+  <img src="https://via.placeholder.com/400x400/9b59b6/ffffff" />
+  <img src="https://via.placeholder.com/400x400/e74c3c/ffffff" />
+  <img src="https://via.placeholder.com/400x400/f1c40f/ffffff" />
+</div>
+<script>
+  // Image slideshow
+  var slideshow = document.getElementById("slideshow");
+  var images = slideshow.getElementsByTagName("img");
+  var index = 0;
+
+  // Next button event listener
+  document.getElementById("nextButton").addEventListener("click", function() {
+    images[index].classList.remove("active");
+    index++;
+    if (index === images.length) {
+      index = 0;
+    }
+    images[index].classList.add("active");
+  });
+
+  // Previous button event listener
+  document.getElementById("prevButton").addEventListener("click", function() {
+    images[index].classList.remove("active");
+    index--;
+    if (index < 0) {
+      index = images.length - 1;
+    }
+    images[index].classList.add("active");
+  });
+
+  // Automatic slideshow
+  setInterval(function() {
+    images[index].classList.remove("active");
+    index++;
+    if (index === images.length) {
+      index = 0;
+    }
+    images[index].classList.add("active");
+  }, 3000);
+</script>
+
     <script>
       // Get the webcam feed
       navigator.mediaDevices
