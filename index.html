@@ -9,7 +9,7 @@ function setLocation(latitude, longitude) {
   widget.setAttribute("lat", latitude);
   widget.setAttribute("lon", longitude);
 }
-      function updateLocation() {
+     function updateLocation() {
   navigator.geolocation.getCurrentPosition(
     function (position) {
       var latitude = position.coords.latitude;
@@ -17,6 +17,19 @@ function setLocation(latitude, longitude) {
       setLocation(latitude, longitude);
       // Show the widget once the location has been set
       document.getElementById("airvisual_widget").style.display = "block";
+      
+      // Fetch the location address
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+        .then(response => response.json())
+        .then(data => {
+          // Parse the response data to extract the address information
+          const address = `${data.address.house_number} ${data.address.road}, ${data.address.city}, ${data.address.state}, ${data.address.postcode}, ${data.address.country}`;
+          // Display the location address on the page
+          document.getElementById("location_address").textContent = `Your current location: ${address}`;
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
     function (error) {
       console.log(error);
@@ -31,6 +44,7 @@ function setLocation(latitude, longitude) {
       }
     }
   );
+}
 }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -79,6 +93,8 @@ function setLocation(latitude, longitude) {
   <body>
     <div id="webcam-feed"></div>
     <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/logogif.gif">
+    <div id="location_address" style="position: absolute; top: 20px; width: 100%; text-align: center;"></div>
+    <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;"></div>
     <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;"></div>
     <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
     <script>
