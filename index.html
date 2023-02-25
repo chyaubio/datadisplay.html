@@ -63,13 +63,6 @@ function setLocation(latitude, longitude) {
         opacity: 0;
         z-index: 1;
       }
-      #airvisual_widget {
-      display: none;
-      height: 200px; /* increase the height */
-      padding-bottom: 100px; /* add padding from the bottom */
-      z-index: 1;
-      }
-
       /* Apply different styles for small screens */
       @media only screen and (max-width: 600px) {
         #logo {
@@ -86,7 +79,7 @@ function setLocation(latitude, longitude) {
   <body>
     <div id="webcam-feed"></div>
     <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/logogif.gif">
-    <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 0; width: 100%; text-align: center;"></div>
+    <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;"></div>
     <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
     <script>
       // Get the webcam feed
