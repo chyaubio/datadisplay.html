@@ -3,38 +3,54 @@
   <head>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/chyaubio/chyaubio.github.io/cacf41165cb55adb4690790eb278c30a760aea7d/img/Logos/favicon.png">
     <script>
-  // Replace API_KEY with your own API key
-  const API_KEY = "e9935647-2321-43e4-82fe-e72b02506f64";
+		// Replace API_KEY with your own API key
+		const API_KEY = "e9935647-2321-43e4-82fe-e72b02506f64";
 
-  // Get user's location
-  navigator.geolocation.getCurrentPosition(position => {
-    const { latitude, longitude } = position.coords;
-    // Use the latitude and longitude to fetch data from the API
-    fetch(`https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${API_KEY}`)
-      .then(response => response.json())
-      .then(data => {
-        const locationName = data.data.city;
-        const airQuality = data.data.current.pollution.aqius;
-        // Select the appropriate image based on air quality
-        let imageSrc;
-        if (airQuality >= 0 && airQuality < 50) {
-          imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/good-air-quality.png";
-        } else if (airQuality >= 50 && airQuality < 100) {
-          imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/moderate-air-quality.jfif";
-        } else if (airQuality >= 100 && airQuality < 150) {
-          imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/unhealthy-for-sensitive-groups-air-quality.jpeg";
-        } else if (airQuality >= 150 && airQuality < 200) {
-          imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/unhealthy-air-quality.jpg";
-        } else if (airQuality >= 200 && airQuality < 300) {
-          imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/very-unhealthy-air-quality.jfif";
-        } else if (airQuality >= 300) {
-          imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/mask-1.jpg";
-        }
-        // Update the image source
-        document.getElementById("slideshow").src = imageSrc;
-      })
-      .catch(error => console.error(error));
-  });
+		// Get user's location
+		navigator.geolocation.getCurrentPosition(position => {
+			const { latitude, longitude } = position.coords;
+			// Use the latitude and longitude to fetch data from the API
+			fetch(`https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${API_KEY}`)
+				.then(response => response.json())
+				.then(data => {
+					const locationName = data.data.city;
+					const airQuality = data.data.current.pollution.aqius;
+          // Select the appropriate image based on air quality
+          let imageSrc;
+          if (airQuality >= 0 && airQuality < 50) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/good-air-quality.png";
+          } else if (airQuality >= 50 && airQuality < 100) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/moderate-air-quality.jfif";
+          } else if (airQuality >= 100 && airQuality < 150) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/unhealthy-for-sensitive-groups-air-quality.jpeg";
+          } else if (airQuality >= 150 && airQuality < 200) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/unhealthy-air-quality.jpg";
+          } else if (airQuality >= 200 && airQuality < 300) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/very-unhealthy-air-quality.jfif";
+          } else if (airQuality >= 300) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/mask-1.jpg";
+          }
+          // Create the image element
+          const img = document.createElement("img");
+          img.id = "slideshow";
+          img.src = imageSrc;
+          img.style.position = "absolute";
+          img.style.top = "50%";
+          img.style.left = "50%";
+          img.style.center = "50%";
+          img.style.transform = "translate(-50%, -50%)";
+          img.style.marginTop = "100px";
+          img.style.width = "800px";
+          img.style.height = "800px";
+          img.style.overflow = "hidden";
+          img.style.zIndex = "1";
+          img.style.display = "flex";
+          img.style.flexWrap = "nowrap";
+          // Add the image element to the page
+          document.body.appendChild(img);
+				})
+				.catch(error => console.error(error));
+		});
 </script>
 <img id="slideshow" src="">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -67,21 +83,6 @@
         opacity: 0;
         z-index: 1;
       }
-      #slideshow {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        center: 50%;
-        transform: translate(-50%, -50%);
-        margin-top: 100px;
-        width: 800px;
-        height: 800px;
-        overflow: hidden;
-        z-index: 1;
-        display: flex;
-        flex-wrap: nowrap;
-      }
-
       @media only screen and (max-width: 800px) {
         #slideshow {
           width: 800px;
@@ -102,8 +103,8 @@
     <div id="webcam-feed"></div>
     <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/logogif.gif">
     <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;"></div>
-<script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
-<img id="slideshow" src="${imageSrc}">
+    <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
+    <img id="slideshow" src="${imageSrc}">
     <script>
       // Get the webcam feed
       navigator.mediaDevices
