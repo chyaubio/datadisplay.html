@@ -137,16 +137,6 @@
     }
     images[index].classList.add("active");
   });
-
-  // Automatic slideshow
-  setInterval(function() {
-    images[index].classList.remove("active");
-    index++;
-    if (index === images.length) {
-      index = 0;
-    }
-    images[index].classList.add("active");
-  }, 3000);
 </script>
 
     <script>
