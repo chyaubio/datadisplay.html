@@ -15,8 +15,26 @@
 				.then(data => {
 					const locationName = data.data.city;
 					const airQuality = data.data.current.pollution.aqius;
-					const temperature = data.data.current.weather.tp;
-					const humidity = data.data.current.weather.hu;
+          // Select the appropriate image based on air quality
+          let imageSrc;
+          if (airQuality >= 0 && airQuality < 50) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/good-air-quality.jpg";
+          } else if (airQuality >= 50 && airQuality < 100) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/moderate-air-quality.jpg";
+          } else if (airQuality >= 100 && airQuality < 150) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/unhealthy-for-sensitive-groups-air-quality.jpg";
+          } else if (airQuality >= 150 && airQuality < 200) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/unhealthy-air-quality.jpg";
+          } else if (airQuality >= 200 && airQuality < 300) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/very-unhealthy-air-quality.jpg";
+          } else if (airQuality >= 300) {
+            imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/hazardous-air-quality.jpg";
+          }
+          // Display the appropriate image
+          const imageElement = document.createElement("img");
+          imageElement.src = imageSrc;
+          imageElement.alt = "Air quality image";
+          document.getElementById("slideshow").appendChild(imageElement);
 				})
 				.catch(error => console.error(error));
 		});
@@ -102,7 +120,7 @@
     <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 20px; width: 100%; text-align: center;"></div>
 <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
 <div id="slideshow">
-  <img src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/Extra%20Information%20and%20Ads/mask-1.jpg" />
+  <img src=imageSrc>
 </div>
     <script>
       // Get the webcam feed
