@@ -30,11 +30,8 @@
           } else if (airQuality >= 300) {
             imageSrc = "https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/mask-1.jpg";
           }
-          // Display the appropriate image
-          const imageElement = document.createElement("img");
-          imageElement.src = imageSrc;
-          imageElement.alt = "Air quality image";
-          document.getElementById("slideshow").appendChild(imageElement);
+          // Update the image source
+          document.getElementById("slideshow").src = imageSrc;
 				})
 				.catch(error => console.error(error));
 		});
