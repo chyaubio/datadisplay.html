@@ -2,6 +2,28 @@
 <html>
   <head>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/chyaubio/chyaubio.github.io/cacf41165cb55adb4690790eb278c30a760aea7d/img/Logos/favicon.png">
+    <script>
+  // Get the user's location and update the widget
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    var widget = new AirVisualWidget({
+      key: 'e9935647-2321-43e4-82fe-e72b02506f64',
+      city: '',
+      state: '',
+      country: '',
+      lat: latitude,
+      lon: longitude,
+      style: 'horizontal',
+      size: 'small'
+    });
+    document.getElementById('airvisual_widget').appendChild(widget);
+  }, function(error) {
+    // Handle any errors
+    console.log('Error getting user location:', error);
+  });
+</script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
       html,
@@ -68,6 +90,24 @@
         opacity: 0.8;
         transform: translateX(-100%);
       }
+
+      #slideshow-controls {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+
+      #slideshow-controls button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 2em;
+        cursor: pointer;
+        margin: 0 10px;
+        outline: none;
+      }
+
       /* Apply different styles for small screens */
       @media only screen and (max-width: 600px) {
         #logo {
@@ -93,6 +133,9 @@
   <img src="https://via.placeholder.com/400x400/9b59b6/ffffff" />
   <img src="https://via.placeholder.com/400x400/e74c3c/ffffff" />
   <img src="https://via.placeholder.com/400x400/f1c40f/ffffff" />
+//Code for the buttons
+  <button class="prev">&#10094;</button>
+  <button class="next">&#10095;</button>
 </div>
 <script>
   // Image slideshow
