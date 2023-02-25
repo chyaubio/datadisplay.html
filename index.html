@@ -3,25 +3,32 @@
   <head>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/chyaubio/chyaubio.github.io/cacf41165cb55adb4690790eb278c30a760aea7d/img/Logos/favicon.png">
     <script>
-      // Set the location for the Tomorrow.io widget
-      function setLocation(latitude, longitude) {
-        var widget = window.tomorrowWidget;
-        if (widget) {
-          widget.setLocation({ lat: latitude, lon: longitude });
-        }
-      }
-     function updateLocation() {
+      // Set the location for the AQI widget
+function setLocation(latitude, longitude) {
+  var widget = document.getElementsByName("airvisual_widget")[0];
+  widget.setAttribute("lat", latitude);
+  widget.setAttribute("lon", longitude);
+}
+      function updateLocation() {
   navigator.geolocation.getCurrentPosition(
     function (position) {
       var latitude = position.coords.latitude;
       var longitude = position.coords.longitude;
       setLocation(latitude, longitude);
+      // Show the widget once the location has been set
+      document.getElementById("airvisual_widget").style.display = "block";
     },
     function (error) {
       console.log(error);
-      // If the user denies the location permission or the location cannot be determined, you can provide a default location instead.
-      // For example:
-      // setLocation(37.7749, -122.4194);
+      // Hide the widget and display an error message if the user denies location permission
+      if (error.code === error.PERMISSION_DENIED) {
+        document.getElementById("airvisual_widget").style.display = "none";
+        alert("This widget requires location permission to function properly.");
+      } else {
+        // If there is another error, you can provide a default location instead.
+        // For example:
+        // setLocation(37.7749, -122.4194);
+      }
     }
   );
 }
@@ -56,53 +63,24 @@
         opacity: 0;
         z-index: 1;
       }
-      #tomorrow-widget {
-        position: absolute;
-        bottom: 0;
-        width: 80%;
-        z-index: 2;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
       /* Apply different styles for small screens */
       @media only screen and (max-width: 600px) {
         #logo {
           width: 200px;
           height: 200px;
         }
-        #tomorrow-widget {
-          height: 40vh;
-        }
+      }
+      /* Hide the widget by default */
+      #airvisual_widget {
+        display: none;
       }
     </style>
   </head>
   <body>
     <div id="webcam-feed"></div>
     <img id="logo" src="https://raw.githubusercontent.com/chyaubio/datadisplay.html/main/logogif.gif">
-    <div id="tomorrow-widget" class="tomorrow"
-      data-location-type="coordinates"
-      data-language="EN"
-      data-unit-system="METRIC"
-      data-skin="light"
-      data-widget-type="aqiPollutant"
-      data-height="60vh"
-      style="padding-bottom:22px;"
-    >
-      <a
-        href="https://www.tomorrow.io/weather-api/"
-        rel="nofollow noopener noreferrer"
-        target="_blank"
-        style="position: absolute; bottom: 0; transform: translateX(-50%); left: 50%;"
-      >
-        <img
-          alt="Powered by the Tomorrow.io Weather API"
-          src="https://weather-website-client.tomorrow.io/img/powered-by.svg"
-          width="250"
-          height="18"
-        />
-      </a>
-    </div>
+    <div name="airvisual_widget" key="63f9b559bb64236302720588" style="position: absolute; bottom: 0; width: 100%; text-align: center;"></div>
+    <script type="text/javascript" src="https://widget.iqair.com/script/widget_v3.0.js"></script>
     <script>
       // Get the webcam feed
       navigator.mediaDevices
@@ -132,21 +110,6 @@
   }
           );
         });
-    </script>
-    <script>
-      (function (d, s, id) {
-        if (d.getElementById(id)) {
-          if (window.__TOMORROW__) {
-            window.__TOMORROW__.renderWidget();
-          }
-          return;
-        }     
-        const fjs = d.getElementsByTagName(s)[0];
-        const js = d.createElement(s);
-        js.id = id;
-        js.src = "https://www.tomorrow.io/v1/widget/sdk/sdk.bundle.min.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "tomorrow-sdk");
     </script>
   </body>
 </html>
