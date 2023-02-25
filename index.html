@@ -3,26 +3,24 @@
   <head>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/chyaubio/chyaubio.github.io/cacf41165cb55adb4690790eb278c30a760aea7d/img/Logos/favicon.png">
     <script>
-  // Get the user's location and update the widget
-  navigator.geolocation.getCurrentPosition(function(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    var widget = new AirVisualWidget({
-      key: 'e9935647-2321-43e4-82fe-e72b02506f64',
-      city: '',
-      state: '',
-      country: '',
-      lat: latitude,
-      lon: longitude,
-      style: 'horizontal',
-      size: 'small'
-    });
-    document.getElementById('airvisual_widget').appendChild(widget);
-  }, function(error) {
-    // Handle any errors
-    console.log('Error getting user location:', error);
-  });
-</script>
+		// Replace API_KEY with your own API key
+		const API_KEY = "e9935647-2321-43e4-82fe-e72b02506f64";
+
+		// Get user's location
+		navigator.geolocation.getCurrentPosition(position => {
+			const { latitude, longitude } = position.coords;
+			// Use the latitude and longitude to fetch data from the API
+			fetch(`https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${API_KEY}`)
+				.then(response => response.json())
+				.then(data => {
+					const locationName = data.data.city;
+					const airQuality = data.data.current.pollution.aqius;
+					const temperature = data.data.current.weather.tp;
+					const humidity = data.data.current.weather.hu;
+				})
+				.catch(error => console.error(error));
+		});
+	</script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
       html,
