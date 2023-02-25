@@ -8,6 +8,7 @@ function setLocation(latitude, longitude) {
   var widget = document.getElementsByName("airvisual_widget")[0];
   widget.setAttribute("lat", latitude);
   widget.setAttribute("lon", longitude);
+  console.log(`Widget location set to (${latitude}, ${longitude})`);
 }
      function updateLocation() {
   navigator.geolocation.getCurrentPosition(
